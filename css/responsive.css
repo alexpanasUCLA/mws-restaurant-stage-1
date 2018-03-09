@@ -6,4 +6,17 @@
 
 .filter-options {
   display: flex;
+  justify-content: space-around;
+
+}
+
+.filter-options h2 {
+  font-size: 1.2em;
+  letter-spacing:0.1em;
+
+}
+
+
+select {
+  flex-basis: 30%;
 }
