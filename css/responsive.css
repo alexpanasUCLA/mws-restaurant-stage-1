@@ -24,5 +24,21 @@ select {
 
 #restaurants-list {
   padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width:650px) {
+
+  #restaurants-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  #restaurants-list li {
+    flex-basis: 45vw;
+    margin-top: 1em;
+  }
+
 
 }
