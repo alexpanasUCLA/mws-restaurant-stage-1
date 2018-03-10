@@ -28,7 +28,7 @@ select {
   flex-direction: column;
 }
 
-@media screen and (min-width:650px) {
+@media screen and (min-width:750px) {
 
   #restaurants-list {
     flex-direction: row;
@@ -36,8 +36,21 @@ select {
     justify-content: space-around;
   }
   #restaurants-list li {
-    flex-basis: 45vw;
+    flex-basis: 42%;
     margin-top: 1em;
+  }
+}
+
+
+@media screen and (min-width:1000px) {
+  #restaurants-list li {
+    flex-basis: 30%;
+  }
+
+  body{
+    width:90vw;
+    margin-left: auto;
+    margin-right: auto;
   }
 
 
