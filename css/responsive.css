@@ -1,7 +1,11 @@
+
+
+
 #restaurants-list li {
   width: 100%;
   margin:0;
   padding: 0;
+  text-align: center;
 }
 
 .filter-options {
@@ -13,12 +17,10 @@
 .filter-options h2 {
   font-size: 1.2em;
   letter-spacing:0.1em;
-
 }
 
-
-select {
-  flex-basis: 30%;
+.filter-options select {
+  width: 30%;
 }
 
 
@@ -52,6 +54,5 @@ select {
     margin-left: auto;
     margin-right: auto;
   }
-
 
 }
