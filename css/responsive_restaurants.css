@@ -9,10 +9,24 @@
 
 }
 
+#restaurant-img, #restaurant-cuisine, #reviews-container {
+  width: 100%;
+}
+
+#restaurant-container{
+
+  padding: 0;
+  width: 100%;
+}
 nav, h1 {
   padding: 3px;
 }
 
 ul,li{
   font-size: 1.1em;
+}
+
+.inside #footer {
+  position:static;
+  width: 100%;
 }
