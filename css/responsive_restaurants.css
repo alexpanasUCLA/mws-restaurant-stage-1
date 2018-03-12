@@ -1,0 +1,18 @@
+#breadcrumb {
+  width: 100%;
+}
+
+.inside #map-container {
+  position: static;
+  height: 60vh;
+  width: auto;
+
+}
+
+nav, h1 {
+  padding: 3px;
+}
+
+ul,li{
+  font-size: 1.1em;
+}
