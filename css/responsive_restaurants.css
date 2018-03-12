@@ -43,6 +43,14 @@ ul,li{
   margin:auto;
 }
 
+#reviews-list li p {
+padding-left: 20px;
+padding-right: 20px;
+}
+
+
+
+
 
 #review-list, #reviews-container {
   padding: 0;
