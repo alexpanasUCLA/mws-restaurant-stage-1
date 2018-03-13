@@ -1,5 +1,5 @@
 #breadcrumb {
-  width: 100%;
+  width: auto;
 }
 
 
@@ -25,7 +25,7 @@
   width: 100%;
 }
 nav, h1 {
-  padding: 3px;
+  padding-top: 5px;
 }
 
 ul,li{
@@ -34,7 +34,7 @@ ul,li{
 
 .inside #footer {
   position:static;
-  width: 100%;
+  width: auto;
 }
 
 #reviews-list li {
