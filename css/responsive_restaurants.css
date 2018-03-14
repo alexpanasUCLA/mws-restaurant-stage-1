@@ -4,7 +4,7 @@
 
 
 .inside #maincontent {
-  margin-top: 190px;
+  margin-top: 142px;
 }
 
 
@@ -19,10 +19,14 @@
   width: 100%;
 }
 
-#restaurant-container{
+#reviews-container h2 {
+  text-align: center;
+}
 
+#restaurant-container{
   padding: 0;
   width: 100%;
+  text-align: center;
 }
 nav, h1 {
   padding-top: 5px;
