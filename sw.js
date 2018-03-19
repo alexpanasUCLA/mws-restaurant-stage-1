@@ -47,6 +47,16 @@ self.addEventListener('install',(event)=>{
     );
 });
 
+// Listening to activate event
+
+  self.addEventListener('activate',(event)=>{
+    console.log('Activating Service Worker',event);
+    return self.clients.claim();
+  })
+
+
+
+
 
 self.addEventListener('fetch',(event)=>{
   event.respondWith(
@@ -62,6 +72,8 @@ self.addEventListener('fetch',(event)=>{
                   cache.put(event.request.url,res.clone());
                   return res;
                 })
+            })
+            .catch((err)=>{
             })
     }
   })
