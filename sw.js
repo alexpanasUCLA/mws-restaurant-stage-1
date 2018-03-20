@@ -1,6 +1,6 @@
 // Add variables for cache versions
-const CACHE_STATIC = 'static-v5';
-const CACHE_DYNAMIC = 'dynamic-v5';
+const CACHE_STATIC = 'static-v6';
+const CACHE_DYNAMIC = 'dynamic-v6';
 
 // Trying to get numberRestaurants
 
