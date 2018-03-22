@@ -1,6 +1,10 @@
 @charset "utf-8";
 /* CSS Document */
 
+:root{
+	--main-color:#252831;
+}
+
 body,td,th,p{
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10pt;
@@ -40,7 +44,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   min-height: 100%;
 }
 #footer {
-  background-color: #444;
+  background-color: var(--main-color);
   color: #aaa;
   font-size: 8pt;
   letter-spacing: 1px;
@@ -108,7 +112,7 @@ nav h1 a {
 .filter-options {
   width: 100%;
   height: 50px;
-  background-color: #3397DB;
+  background-color: var(--main-color);
   align-items: center;
 }
 .filter-options h2 {
