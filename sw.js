@@ -1,6 +1,6 @@
 // Add variables for cache versions
-const CACHE_STATIC = 'static-v7';
-const CACHE_DYNAMIC = 'dynamic-v7';
+const CACHE_STATIC = 'static-v2';
+const CACHE_DYNAMIC = 'dynamic-v2';
 
 // Trying to get numberRestaurants
 
@@ -19,7 +19,7 @@ const shellToPrecach = [
 ];
 
 
-let imgsCach=[];
+// let imgsCach=[];
 let restaurantPages=[];
 let staticFilesToPrecach =[];
 
@@ -30,11 +30,11 @@ fetch('/data/restaurants.json')
     .then((json_file)=>{
       numberRestaurants=json_file.restaurants.length;
       for (var i = 1; i < numberRestaurants+1; i++) {
-          imgsCach.push(`/img/${i}.jpg`);
+          // imgsCach.push(`/img/${i}.jpg`);
           restaurantPages.push(`/restaurant.html?id=${i}`);
       }
-      console.log(imgsCach);
-      staticFilesToPrecach = [...imgsCach,...shellToPrecach,...restaurantPages];
+      // console.log(imgsCach);
+      staticFilesToPrecach = [...shellToPrecach,...restaurantPages];
       console.log(staticFilesToPrecach);
     });
 
