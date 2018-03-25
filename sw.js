@@ -19,7 +19,7 @@ const shellToPrecach = [
 ];
 
 
-// let imgsCach=[];
+let imgsCach=[];
 let restaurantPages=[];
 let staticFilesToPrecach =[];
 
@@ -30,11 +30,11 @@ fetch('/data/restaurants.json')
     .then((json_file)=>{
       numberRestaurants=json_file.restaurants.length;
       for (var i = 1; i < numberRestaurants+1; i++) {
-          // imgsCach.push(`/img/${i}.jpg`);
+          imgsCach.push(`/img/medium_img/${i}_med.jpg`);
           restaurantPages.push(`/restaurant.html?id=${i}`);
       }
       // console.log(imgsCach);
-      staticFilesToPrecach = [...shellToPrecach,...restaurantPages];
+      staticFilesToPrecach = [...imgsCach,...shellToPrecach,...restaurantPages];
       console.log(staticFilesToPrecach);
     });
 

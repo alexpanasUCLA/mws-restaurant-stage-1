@@ -215,7 +215,7 @@ nav h1 a {
   width: 50%;
 }
 #restaurant-name {
-  color:var(--h1-color);
+  color:var(--h2-color);
   font-family: Arial,sans-serif;
   font-size: 20pt;
   font-weight: 200;
