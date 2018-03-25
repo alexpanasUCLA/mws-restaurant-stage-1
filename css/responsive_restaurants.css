@@ -93,10 +93,10 @@ font-size: 1.2em;
 
 @media screen and (min-width:1000px) {
 
-  nav,body,header {
+  /* nav,body,header {
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
-  }
+  } */
 
 }
