@@ -50,11 +50,15 @@ ol,li{
   padding: 0%;
   width: 98%;
   margin:auto;
+  margin-bottom: 2em;
+  border-top-right-radius: 2em;
+  border-bottom-right-radius: 2em;
 }
 
 #reviews-list li p {
 padding-left: 20px;
 padding-right: 20px;
+font-size: 1.2em;
 }
 
 #restaurant-hours {

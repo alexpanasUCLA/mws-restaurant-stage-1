@@ -3,6 +3,7 @@
 
 :root{
 	--main-color:#252831;
+	--h1-color:red;
 }
 
 body,td,th,p{
@@ -161,7 +162,7 @@ nav h1 a {
   min-width: 100%;
 }
 #restaurants-list li h1 {
-  color: #f18200;
+  color: var(--h1-color);
   font-family: Arial,sans-serif;
   font-size: 14pt;
   font-weight: 200;
@@ -214,7 +215,7 @@ nav h1 a {
   width: 50%;
 }
 #restaurant-name {
-  color: #f18200;
+  color:var(--h1-color);
   font-family: Arial,sans-serif;
   font-size: 20pt;
   font-weight: 200;
