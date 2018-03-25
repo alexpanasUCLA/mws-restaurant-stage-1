@@ -19,12 +19,14 @@
   width: 100%;
 }
 
-#reviews-container h2 {
+#reviews-container h3 {
   text-align: center;
   background-color: var(--main-color);
   color:#fff;
+  font-size: 3vh;
   font-family: Arial, Helvetica, sans-serif;
   letter-spacing: 10px;
+  padding: 7px;
 
 }
 
