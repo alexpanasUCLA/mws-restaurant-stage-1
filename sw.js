@@ -1,3 +1,8 @@
+// import idb plug-in
+importScripts('/js/idb.js');
+
+
+
 // Add variables for cache versions
 const CACHE_STATIC = 'static-v3';
 const CACHE_DYNAMIC = 'dynamic-v3';
@@ -37,6 +42,15 @@ fetch('/data/restaurants.json')
       staticFilesToPrecach = [...imgsCach,...shellToPrecach,...restaurantPages];
       console.log(staticFilesToPrecach);
     });
+
+//create objectStore  //
+
+const dbPromise = idb.open('restaurant-store',1,function (db) {
+  if (!db.objectStoreNames.contains('restaurantsObj')) {
+    db.createObjectStore('restaurantsObj',{keyPath:'id'})
+  };
+});
+
 
 
 // Caching static files with service worker
