@@ -4,7 +4,7 @@ importScripts('/js/idb.js');
 
 
 // Add variables for cache versions
-const CACHE_STATIC = 'static-v3';
+const CACHE_STATIC = 'static-v4';
 const CACHE_DYNAMIC = 'dynamic-v3';
 
 // Trying to get numberRestaurants
@@ -15,12 +15,12 @@ const shellToPrecach = [
   '/restaurant.html',
   '/js/dbhelper.js',
   '/js/main.js',
+  '/js/idb.js',
   '/js/restaurant_info.js',
-  '/data/restaurants.json',
+  // '/data/restaurants.json',
   '/css/styles.css',
   '/css/responsive.css',
-  '/css/responsive_restaurants.css',
-  '/restaurant.html?id=9'
+  '/css/responsive_restaurants.css'
 ];
 
 
@@ -87,23 +87,47 @@ self.addEventListener('install',(event)=>{
 
 
 self.addEventListener('fetch',(event)=>{
-  event.respondWith(
-    caches.match(event.request)
-      .then((response)=>{
-        if (response) {
-          return response;
-        } else {
-          return fetch(event.request)
-            .then((res)=>{
-              return caches.open(CACHE_DYNAMIC)
-                .then((cache)=>{
-                  cache.put(event.request.url,res.clone());
-                  return res;
-                })
-            })
-            .catch((err)=>{
-            })
-    }
-  })
-);
+  const urlDB = 'http://localhost:1337/restaurants';
+  if (event.request.url.indexOf(urlDB) > -1) {
+      console.log(urlDB,'it is JSON url');
+      event.respondWith(fetch(event.request)
+        .then(function (res) {
+          const clonedRes = res.clone();
+          clonedRes.json()
+            .then((data)=>{
+              for (let key in data){
+                dbPromise
+                  .then((db)=>{
+                    const tx = db.transaction('restaurantsObj','readwrite');
+                    const store = tx.objectStore('restaurantsObj');
+                    store.put(data[key]);
+                    return tx.complete;
+                  });
+              };
+            });
+          return res;
+        }))
+  } else {
+    event.respondWith(
+      caches.match(event.request)
+        .then((response)=>{
+          if (response) {
+            return response;
+          } else {
+            return fetch(event.request)
+              .then((res)=>{
+                return caches.open(CACHE_DYNAMIC)
+                  .then((cache)=>{
+                    cache.put(event.request.url,res.clone());
+                    return res;
+                  })
+              })
+              .catch((err)=>{
+              })
+      }
+    })
+  );
+  }
+
+
 });
