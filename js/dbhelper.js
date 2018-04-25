@@ -17,14 +17,22 @@ class DBHelper {
    */
   static fetchRestaurants(callback) {
     fetch(DBHelper.DATABASE_URL)
-      .then(data=>data.json())
-      .then(info => {
-        const restaurants = info;
-  
-        callback(null, restaurants);
-      }).catch((error)=>{
-        callback(error, null);
+      .then(resp => {
+
+        if (resp.status === 200) {
+            return resp.json()
+            .then(info => {
+              const restaurants = info;
+
+              callback(null, restaurants);
+            }).catch((error)=>{
+              callback(error, null);
+            })
+        }
+
       })
+
+
 
     // let xhr = new XMLHttpRequest();
     // xhr.open('GET', DBHelper.DATABASE_URL);
