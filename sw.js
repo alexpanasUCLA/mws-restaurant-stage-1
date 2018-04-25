@@ -9,6 +9,27 @@ const dbPromise = idb.open('restaurant-store',1,function (db) {
   };
 });
 
+
+// TODO populate IndexDB
+  const urlDB = 'http://localhost:1337/restaurants';
+  fetch(urlDB)
+    .then(res=>res.json())
+    .then(data=>{
+      for (let key in data){
+        dbPromise
+          .then(db=>{
+                          const tx = db.transaction('restaurantsObj','readwrite');
+                          const store = tx.objectStore('restaurantsObj');
+                          store.put(data[key]);
+                          return tx.complete;
+          })
+      }
+    })
+
+
+
+
+
 // Add variables for cache versions
 const CACHE_STATIC = 'static-v4';
 const CACHE_DYNAMIC = 'dynamic-v3';

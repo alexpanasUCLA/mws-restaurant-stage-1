@@ -17,6 +17,7 @@ class DBHelper {
    */
   static fetchRestaurants(callback) {
 
+
     const dbPromise = idb.open('restaurant-store',1,function (db) {
       if (!db.objectStoreNames.contains('restaurantsObj')) {
         db.createObjectStore('restaurantsObj',{keyPath:'id'})
