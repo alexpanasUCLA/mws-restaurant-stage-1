@@ -44,6 +44,7 @@ const shellToPrecach = [
   '/js/main.js',
   '/js/idb.js',
   '/js/restaurant_info.js',
+  '/manifest.json',
   // '/data/restaurants.json',
   '/css/styles.css',
   '/css/responsive.css',
