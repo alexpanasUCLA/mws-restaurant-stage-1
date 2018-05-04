@@ -10,7 +10,7 @@ const dbPromise = idb.open('restaurant-store',1,function (db) {
 });
 
 
-// TODO populate IndexDB
+// populate IndexDB
   const urlDB = 'http://localhost:1337/restaurants';
   fetch(urlDB)
     .then(res=>res.json())
