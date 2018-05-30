@@ -31,8 +31,8 @@ const dbPromise = idb.open('restaurant-store',1,function (db) {
 
 
 // Add variables for cache versions
-const CACHE_STATIC = 'static-v4';
-const CACHE_DYNAMIC = 'dynamic-v3';
+const CACHE_STATIC = 'static-v5';
+const CACHE_DYNAMIC = 'dynamic-v5';
 
 // Trying to get numberRestaurants
 
