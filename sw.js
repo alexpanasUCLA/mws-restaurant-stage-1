@@ -31,8 +31,8 @@ const dbPromise = idb.open('restaurant-store',1,function (db) {
 
 
 // Add variables for cache versions
-const CACHE_STATIC = 'static-v5';
-const CACHE_DYNAMIC = 'dynamic-v5';
+const CACHE_STATIC = 'static-v7';
+const CACHE_DYNAMIC = 'dynamic-v7';
 
 // Trying to get numberRestaurants
 
@@ -45,7 +45,6 @@ const shellToPrecach = [
   '/js/idb.js',
   '/js/restaurant_info.js',
   '/manifest.json',
-  // '/data/restaurants.json',
   '/css/styles.css',
   '/css/responsive.css',
   '/css/responsive_restaurants.css'
@@ -68,29 +67,10 @@ dbPromise.then((db)=>{
                     restaurantPages.push(`/restaurant.html?id=${i}`);
                 }
                 staticFilesToPrecach = [...imgsCach,...shellToPrecach,...restaurantPages];
+                // staticFilesToPrecach = [...shellToPrecach,...restaurantPages];
                 console.log(staticFilesToPrecach);
         })
 });
-
-
-
-// fetch('/data/restaurants.json')
-//   .then((response)=>{
-//     return response.json();})
-//     .then((json_file)=>{
-//       numberRestaurants=json_file.restaurants.length;
-//       for (var i = 1; i < numberRestaurants+1; i++) {
-//           imgsCach.push(`/img/medium_img/${i}_med.jpg`);
-//           restaurantPages.push(`/restaurant.html?id=${i}`);
-//       }
-//       // console.log(imgsCach);
-//       staticFilesToPrecach = [...imgsCach,...shellToPrecach,...restaurantPages];
-//       console.log(staticFilesToPrecach);
-//     });
-//
-//
-
-
 
 
 
@@ -128,27 +108,27 @@ self.addEventListener('install',(event)=>{
 
 
 self.addEventListener('fetch',(event)=>{
-  const urlDB = 'http://localhost:1337/restaurants';
-  if (event.request.url.indexOf(urlDB) > -1) {
-      console.log(urlDB,'it is JSON url');
-      event.respondWith(fetch(event.request)
-        .then(function (res) {
-          const clonedRes = res.clone();
-          clonedRes.json()
-            .then((data)=>{
-              for (let key in data){
-                dbPromise
-                  .then((db)=>{
-                    const tx = db.transaction('restaurantsObj','readwrite');
-                    const store = tx.objectStore('restaurantsObj');
-                    store.put(data[key]);
-                    return tx.complete;
-                  });
-              };
-            });
-          return res;
-        }))
-  } else {
+  // const urlDB = 'http://localhost:1337/restaurants';
+  // if (event.request.url.indexOf(urlDB) > -1) {
+  //     console.log(urlDB,'it is JSON url');
+  //     event.respondWith(fetch(event.request)
+  //       .then(function (res) {
+  //         const clonedRes = res.clone();
+  //         clonedRes.json()
+  //           .then((data)=>{
+  //             for (let key in data){
+  //               dbPromise
+  //                 .then((db)=>{
+  //                   const tx = db.transaction('restaurantsObj','readwrite');
+  //                   const store = tx.objectStore('restaurantsObj');
+  //                   store.put(data[key]);
+  //                   return tx.complete;
+  //                 });
+  //             };
+  //           });
+  //         return res;
+  //       }))
+  // } else {
     event.respondWith(
       caches.match(event.request)
         .then((response)=>{
@@ -168,7 +148,7 @@ self.addEventListener('fetch',(event)=>{
       }
     })
   );
-  }
+  // }
 
 
 });
