@@ -56,21 +56,34 @@ let restaurantPages=[];
 let staticFilesToPrecach =[];
 
 
-dbPromise.then((db)=>{
-  const tx = db.transaction('restaurantsObj','readonly');
-  const store = tx.objectStore('restaurantsObj');
-  return store.getAll()
-        .then (storedJSON =>{
-                numberRestaurants = storedJSON.length;
-                for (var i = 1; i < numberRestaurants+1; i++) {
-                    imgsCach.push(`/img/medium_img/${i}_med.jpg`);
-                    restaurantPages.push(`/restaurant.html?id=${i}`);
-                }
-                staticFilesToPrecach = [...imgsCach,...shellToPrecach,...restaurantPages];
-                // staticFilesToPrecach = [...shellToPrecach,...restaurantPages];
-                console.log(staticFilesToPrecach);
-        })
-});
+for (let i = 1; i < 11; i++) {
+  imgsCach.push(`/img/medium_img/${i}_med.jpg`);
+  restaurantPages.push(`/restaurant.html?id=${i}`);
+}
+staticFilesToPrecach = [...imgsCach,...shellToPrecach,...restaurantPages];
+console.log(staticFilesToPrecach);
+
+
+
+
+
+
+
+// dbPromise.then((db)=>{
+//   const tx = db.transaction('restaurantsObj','readonly');
+//   const store = tx.objectStore('restaurantsObj');
+//   return store.getAll()
+//         .then (storedJSON =>{
+//                 numberRestaurants = storedJSON.length;
+//                 for (let i = 1; i < numberRestaurants+1; i++) {
+//                     imgsCach.push(`/img/medium_img/${i}_med.jpg`);
+//                     restaurantPages.push(`/restaurant.html?id=${i}`);
+//                 }
+//                 staticFilesToPrecach = [...imgsCach,...shellToPrecach,...restaurantPages];
+//                 // staticFilesToPrecach = [...shellToPrecach,...restaurantPages];
+//                 console.log(staticFilesToPrecach);
+//         })
+// });
 
 
 
