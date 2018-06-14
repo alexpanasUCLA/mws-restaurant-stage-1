@@ -165,3 +165,68 @@ getParameterByName = (name, url) => {
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
+// Get value is_favorite of the current restaurant 
+// return promise (readable stream) so return is consumed only once 
+
+const myID = getParameterByName('id')
+const favStar = document.getElementById('fav-star')
+const textFav = document.getElementById('par-fav-star')
+
+
+const updateStar = ()=>{
+
+  DBHelper.fetchRestaurantById(myID,(er,r)=>{
+
+    if(r.is_favorite) {
+      favStar.style.color = "red";
+      textFav.innerHTML = ""
+    } else {
+      favStar.style.color = "black"
+      textFav.innerText = "Mark as favorite"
+    }
+  })
+}
+
+updateStar()
+
+// Listen to click event and toggle is_favorite at IndexedDB 
+favStar.addEventListener('click',(ev)=>{
+  console.log('Clicking STAR');
+
+  const dbPromise = idb.open('restaurant-store',1,function (db) {
+    if (!db.objectStoreNames.contains('restaurantsObj')) {
+      console.log('There is no IndexDB');
+    };
+  });
+
+  dbPromise
+  .then(db=>{
+              console.log('Updating entry');
+              const tx = db.transaction('restaurantsObj','readwrite');
+              const store = tx.objectStore('restaurantsObj');
+              store.openCursor().then(function cursorIterate(cursor) {
+                if (!cursor) return;
+                if(cursor.value.id === Number(myID)){
+                  const entryMod = cursor.value
+                  entryMod.is_favorite = !entryMod.is_favorite
+                  cursor.update(entryMod)
+                }
+                console.log(cursor.value.is_favorite);
+                return cursor.continue().then(cursorIterate);
+              });
+              tx.complete.then(() => console.log('finished'));
+            
+              })
+                
+                  
+  
+
+  
+  
+              updateStar()
+  // favStar.style.color = "green"
+  // textFav.innerText = "Mark as favorite"
+
+})
+

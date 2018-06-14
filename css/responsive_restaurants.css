@@ -1,3 +1,16 @@
+
+#par-fav-star {
+  display: inline; 
+  color:rgb(219, 45, 45);
+  vertical-align: super;
+}
+
+#fav-star {
+  font-size: 2em;
+}
+
+
+
 #breadcrumb {
   width: auto;
 }
