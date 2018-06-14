@@ -191,8 +191,7 @@ const updateStar = ()=>{
 updateStar()
 
 // Listen to click event and toggle is_favorite at IndexedDB 
-favStar.addEventListener('click',(ev)=>{
-  console.log('Clicking STAR');
+favStar.addEventListener('click',()=>{
 
   const dbPromise = idb.open('restaurant-store',1,function (db) {
     if (!db.objectStoreNames.contains('restaurantsObj')) {
@@ -202,31 +201,32 @@ favStar.addEventListener('click',(ev)=>{
 
   dbPromise
   .then(db=>{
-              console.log('Updating entry');
+              
               const tx = db.transaction('restaurantsObj','readwrite');
               const store = tx.objectStore('restaurantsObj');
-              store.openCursor().then(function cursorIterate(cursor) {
+              let range = IDBKeyRange.only(Number(myID))
+              store.openCursor(range).then(function cursorIterate(cursor) {
                 if (!cursor) return;
                 if(cursor.value.id === Number(myID)){
                   const entryMod = cursor.value
-                  entryMod.is_favorite = !entryMod.is_favorite
-                  cursor.update(entryMod)
+                  if(entryMod) {
+                    entryMod.is_favorite = !entryMod.is_favorite
+                    cursor.update(entryMod)
+                  } else {
+                    console.log('Missing');
+                    entryMod.is_favorite = true 
+                  }
+
                 }
                 console.log(cursor.value.is_favorite);
                 return cursor.continue().then(cursorIterate);
               });
               tx.complete.then(() => console.log('finished'));
             
-              })
-                
-                  
-  
-
-  
-  
+              })               
+          
               updateStar()
-  // favStar.style.color = "green"
-  // textFav.innerText = "Mark as favorite"
+
 
 })
 
