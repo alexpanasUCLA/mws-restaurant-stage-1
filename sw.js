@@ -1,4 +1,4 @@
-// import idb plug-in
+
 importScripts('/js/idb.js');
 
 
@@ -31,7 +31,7 @@ const dbPromise = idb.open('restaurant-store',1,function (db) {
 
 
 // Add variables for cache versions
-const CACHE_STATIC = 'static-v7';
+const CACHE_STATIC = 'static-v8';
 const CACHE_DYNAMIC = 'dynamic-v7';
 
 // Trying to get numberRestaurants
@@ -61,7 +61,7 @@ for (let i = 1; i < 11; i++) {
   restaurantPages.push(`/restaurant.html?id=${i}`);
 }
 staticFilesToPrecach = [...imgsCach,...shellToPrecach,...restaurantPages];
-console.log(staticFilesToPrecach);
+// console.log(staticFilesToPrecach);
 
 
 

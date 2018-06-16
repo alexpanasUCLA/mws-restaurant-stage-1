@@ -169,16 +169,27 @@ getParameterByName = (name, url) => {
 // Get value is_favorite of the current restaurant 
 // return promise (readable stream) so return is consumed only once 
 
-const myID = getParameterByName('id')
+const myID = Number(getParameterByName('id'))
 const favStar = document.getElementById('fav-star')
 const textFav = document.getElementById('par-fav-star')
+const endpointFav = `http://localhost:1337/restaurants/${myID}/?is_favorite=true`
+const endpointUnFav = `http://localhost:1337/restaurants/${myID}/?is_favorite=false`
 
 
 const updateStar = ()=>{
 
   DBHelper.fetchRestaurantById(myID,(er,r)=>{
+    console.log(`${myID}`,r.is_favorite);
+    console.log(typeof(r.is_favorite));
+    let logicalLikeness; 
+    if(r.is_favorite === 'true') {
+      logicalLikeness = true;
+    } else {
+      logicalLikeness = false; 
+    }
+    console.log(typeof(logicalLikeness));
 
-    if(r.is_favorite) {
+    if(logicalLikeness) {
       favStar.style.color = "red";
       textFav.innerHTML = ""
     } else {
@@ -204,29 +215,43 @@ favStar.addEventListener('click',()=>{
               
               const tx = db.transaction('restaurantsObj','readwrite');
               const store = tx.objectStore('restaurantsObj');
-              let range = IDBKeyRange.only(Number(myID))
+              let range = IDBKeyRange.only(myID)
               store.openCursor(range).then(function cursorIterate(cursor) {
                 if (!cursor) return;
-                if(cursor.value.id === Number(myID)){
+                if(cursor.value.id === myID){
                   const entryMod = cursor.value
-                  if(entryMod) {
-                    entryMod.is_favorite = !entryMod.is_favorite
+
+                  if(entryMod.is_favorite) {
+          
+                    if(entryMod.is_favorite === 'true') {
+                      entryMod.is_favorite = 'false'
+                      fetch(endpointUnFav,{method:'POST'})
+                        .then(res=>{
+                          console.log('Got it',res)})
+                        .catch(e=>console.log)
+                    } else {
+                      entryMod.is_favorite = 'true'
+                      fetch(endpointFav,{method:'POST'})
+                      .then(res=>{console.log(res)})
+                    }
+                    // entryMod.is_favorite = !entryMod.is_favorite
                     cursor.update(entryMod)
                   } else {
                     console.log('Missing');
-                    entryMod.is_favorite = true 
+                    entryMod.is_favorite = 'true'
+                    cursor.update(entryMod)
                   }
 
                 }
-                console.log(cursor.value.is_favorite);
+                // console.log(entryMod.is_favorite);
                 return cursor.continue().then(cursorIterate);
               });
               tx.complete.then(() => console.log('finished'));
+
             
               })               
           
               updateStar()
-
 
 })
 
