@@ -22,6 +22,12 @@ class DBHelper {
       if (!db.objectStoreNames.contains('restaurantsObj')) {
         db.createObjectStore('restaurantsObj',{keyPath:'id'})
       };
+  
+      if (!db.objectStoreNames.contains('reviewsObj')) {
+        db.createObjectStore('reviewsObj',{keyPath:'id'})
+      }
+
+
     });
 
       dbPromise.then((db)=>{

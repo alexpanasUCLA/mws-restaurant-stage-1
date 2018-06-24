@@ -204,11 +204,14 @@ updateStar()
 // Listen to click event and toggle is_favorite at IndexedDB 
 favStar.addEventListener('click',()=>{
 
-  const dbPromise = idb.open('restaurant-store',1,function (db) {
-    if (!db.objectStoreNames.contains('restaurantsObj')) {
-      console.log('There is no IndexDB');
-    };
-  });
+  // const dbPromise = idb.open('restaurant-store',1,function (db) {
+  //   if (!db.objectStoreNames.contains('restaurantsObj')) {
+  //     console.log('There is no IndexDB');
+  //   };
+  //   if (!db.objectStoreNames.contains('reviewsObj')) {
+  //     db.createObjectStore('reviewsObj',{keyPath:'id'})
+  //   }
+  // });
 
   dbPromise
   .then(db=>{
@@ -226,13 +229,13 @@ favStar.addEventListener('click',()=>{
                     if(entryMod.is_favorite === 'true') {
                       entryMod.is_favorite = 'false'
                       fetch(endpointUnFav,{method:'POST'})
-                        .then(res=>{
-                          console.log('Got it',res)})
-                        .catch(e=>console.log)
+                        // .then(res=>{
+                        //   console.log('Got it',res)})
+                        // .catch(e=>console.log)
                     } else {
                       entryMod.is_favorite = 'true'
                       fetch(endpointFav,{method:'POST'})
-                      .then(res=>{console.log(res)})
+                      // .then(res=>{console.log(res)})
                     }
                     // entryMod.is_favorite = !entryMod.is_favorite
                     cursor.update(entryMod)

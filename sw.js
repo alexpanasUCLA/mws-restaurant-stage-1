@@ -6,11 +6,35 @@ importScripts('/js/idb.js');
 const dbPromise = idb.open('restaurant-store',1,function (db) {
   if (!db.objectStoreNames.contains('restaurantsObj')) {
     db.createObjectStore('restaurantsObj',{keyPath:'id'})
-  };
+  } 
+  
+  if (!db.objectStoreNames.contains('reviewsObj')) {
+    db.createObjectStore('reviewsObj',{keyPath:'id'})
+  }
+
 });
 
+// populate indexDB reviews objectStore 
 
-// populate IndexDB
+const urlDB_reviews = 'http://localhost:1337/reviews/';
+fetch(urlDB_reviews)
+  .then(res=>res.json())
+  .then(data=>{
+    for (let key in data){
+      dbPromise
+        .then(db=>{
+                        const tx = db.transaction('reviewsObj','readwrite');
+                        const store = tx.objectStore('reviewsObj');
+                        store.put(data[key]);
+                        return tx.complete;
+        })
+    }
+  })
+
+
+
+
+// populate IndexDB restaurant objectStore
   const urlDB = 'http://localhost:1337/restaurants';
   fetch(urlDB)
     .then(res=>res.json())
