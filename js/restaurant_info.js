@@ -1,6 +1,15 @@
 let restaurant;
 var map;
 
+const dbPromise = idb.open('restaurant-store',1,function (db) {
+  if (!db.objectStoreNames.contains('restaurantsObj')) {
+    console.log('There is no IndexDB');
+  };
+  if (!db.objectStoreNames.contains('reviewsObj')) {
+    db.createObjectStore('reviewsObj',{keyPath:'id'})
+  }
+});
+
 /**
  * Initialize Google map, called from HTML.
  */
@@ -97,23 +106,46 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+fillReviewsHTML = () => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
+  
 
-  if (!reviews) {
-    const noReviews = document.createElement('p');
-    noReviews.innerHTML = 'No reviews yet!';
-    container.appendChild(noReviews);
-    return;
-  }
+  // if (!reviews) {
+  //   const noReviews = document.createElement('p');
+  //   noReviews.innerHTML = 'No reviews yet!';
+  //   container.appendChild(noReviews);
+  //   return;
+  // }
   const ul = document.getElementById('reviews-list');
-  reviews.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
-  });
+
+  dbPromise
+  .then(db=>{
+              
+              const tx = db.transaction('reviewsObj','readonly');
+              const store = tx.objectStore('reviewsObj');
+              store.openCursor().then(function cursorIterate(cursor){
+                if (!cursor) return;
+            
+                  const entryRest = cursor.value; 
+                  if(entryRest.restaurant_id === myID ) {
+                    ul.appendChild(createReviewHTML(entryRest));
+                  }
+                
+            
+                return cursor.continue().then(cursorIterate);
+              });
+              tx.complete.then(() => console.log('finished'));
+  })
+
   container.appendChild(ul);
+
+  // reviews.forEach(review => {
+  //   ul.appendChild(createReviewHTML(review));
+  // });
+  // container.appendChild(ul);
 }
 
 /**
@@ -179,8 +211,7 @@ const endpointUnFav = `http://localhost:1337/restaurants/${myID}/?is_favorite=fa
 const updateStar = ()=>{
 
   DBHelper.fetchRestaurantById(myID,(er,r)=>{
-    console.log(`${myID}`,r.is_favorite);
-    console.log(typeof(r.is_favorite));
+
     let logicalLikeness; 
     if(r.is_favorite === 'true') {
       logicalLikeness = true;
@@ -204,14 +235,7 @@ updateStar()
 // Listen to click event and toggle is_favorite at IndexedDB 
 favStar.addEventListener('click',()=>{
 
-  // const dbPromise = idb.open('restaurant-store',1,function (db) {
-  //   if (!db.objectStoreNames.contains('restaurantsObj')) {
-  //     console.log('There is no IndexDB');
-  //   };
-  //   if (!db.objectStoreNames.contains('reviewsObj')) {
-  //     db.createObjectStore('reviewsObj',{keyPath:'id'})
-  //   }
-  // });
+
 
   dbPromise
   .then(db=>{
