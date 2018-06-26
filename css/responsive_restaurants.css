@@ -1,4 +1,51 @@
 
+                button {
+                padding: 0.5em 0.7em;
+                border: 1px solid #8d8d8d;
+                background-color: white;
+                font-size: 1em;
+                }
+    
+                .modal {
+                display: block;
+                position: fixed;
+                z-index: 1000;
+                }
+    
+                .modal-backdrop {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background-color: rgba(0, 0, 0, 0);
+                }
+    
+                .modal-body {
+                position: fixed;
+                top: 40%;
+                bottom: 5%;
+                right: 3%;
+                left: 3%;
+                padding: 2em 3em;
+                background-color: rgba(219, 212, 212, 0.973);
+                overflow:auto;
+              
+                }
+    
+                .modal-close {
+                cursor: pointer;     }     
+                        
+    
+
+
+
+
+
+
+
+
+
 #par-fav-star {
   display: inline; 
   color:rgb(219, 45, 45);

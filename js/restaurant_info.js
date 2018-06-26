@@ -285,3 +285,30 @@ favStar.addEventListener('click',()=>{
 
 })
 
+
+// Create form using modal and handle data from form 
+
+// const addReviewButton = document.getElementById('add_review');
+
+const close = document.getElementById('close');
+const modal = document.getElementById('modal');
+const submit = document.getElementById('submit')
+
+// addReviewButton.addEventListener('click', (event) =>{
+// event.preventDefault();
+// modal.style.display = 'block';
+// });
+
+close.addEventListener('click', (event)=> {
+event.preventDefault();
+modal.style.display = 'none';
+});
+
+submit.addEventListener('click',(event)=>{
+    event.preventDefault();
+    
+})
+
+
+
+
