@@ -109,8 +109,14 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 fillReviewsHTML = () => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
-  title.innerHTML = 'Reviews';
+  const newReviewButton = document.createElement('button')
+  newReviewButton.setAttribute('id','add_review');
+  newReviewButton.innerHTML = 'Write your review'
+  title.appendChild(newReviewButton)
+  // title.innerHTML = 'Reviews';
+
   container.appendChild(title);
+
   
 
   // if (!reviews) {
@@ -218,7 +224,7 @@ const updateStar = ()=>{
     } else {
       logicalLikeness = false; 
     }
-    console.log(typeof(logicalLikeness));
+   
 
     if(logicalLikeness) {
       favStar.style.color = "red";
@@ -234,9 +240,6 @@ updateStar()
 
 // Listen to click event and toggle is_favorite at IndexedDB 
 favStar.addEventListener('click',()=>{
-
-
-
   dbPromise
   .then(db=>{
               
