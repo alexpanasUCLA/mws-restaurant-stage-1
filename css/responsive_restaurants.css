@@ -9,7 +9,14 @@
   font-size: 2em;
 }
 
-
+#add_review {
+  background-color: rgb(234,54,34);
+  font-size: 1.1em;
+  border-radius: 0.5em;
+  color: white;
+  border: 1px solid black;
+  cursor: pointer;
+}
 
 #breadcrumb {
   width: auto;
