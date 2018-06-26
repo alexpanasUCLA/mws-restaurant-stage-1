@@ -110,9 +110,9 @@ fillReviewsHTML = () => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   const newReviewButton = document.createElement('button')
-  newReviewButton.setAttribute('id','add_review');
+
   newReviewButton.innerHTML = 'Write your review'
-  // let addReviewButton = document.querySelector('#add_review')
+
   newReviewButton.onclick = (event)=>{
     event.preventDefault();
     modal.style.display = 'block';
@@ -296,8 +296,6 @@ favStar.addEventListener('click',()=>{
 const close = document.getElementById('close');
 const modal = document.getElementById('modal');
 const submit = document.getElementById('submit')
-
-
 
 
 close.addEventListener('click', (event)=> {
