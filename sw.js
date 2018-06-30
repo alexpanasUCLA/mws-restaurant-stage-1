@@ -1,8 +1,5 @@
 importScripts('/js/idb.js');
 
-//create objectStore  //
-
-
 const dbPromise = idb.open('restaurant-store',1,function (db) {
   if (!db.objectStoreNames.contains('restaurantsObj')) {
     db.createObjectStore('restaurantsObj',{keyPath:'id'})
@@ -13,37 +10,23 @@ const dbPromise = idb.open('restaurant-store',1,function (db) {
   }
 
 });
+//create objectStore  //
+const updateIndexDB = ()=>{
+ 
+  
+  // populate indexDB reviews objectStore 
+  
 
-// populate indexDB reviews objectStore 
+  const urlDB_reviews = 'http://localhost:1337/reviews/';
 
-const urlDB_reviews = 'http://localhost:1337/reviews/';
-fetch(urlDB_reviews)
-  .then(res=>res.json())
-  .then(data=>{
-    for (let key in data){
-      dbPromise
-        .then(db=>{
-                        const tx = db.transaction('reviewsObj','readwrite');
-                        const store = tx.objectStore('reviewsObj');
-                        store.put(data[key]);
-                        return tx.complete;
-        })
-    }
-  })
-
-
-
-
-// populate IndexDB restaurant objectStore
-  const urlDB = 'http://localhost:1337/restaurants';
-  fetch(urlDB)
+  fetch(urlDB_reviews)
     .then(res=>res.json())
     .then(data=>{
       for (let key in data){
         dbPromise
           .then(db=>{
-                          const tx = db.transaction('restaurantsObj','readwrite');
-                          const store = tx.objectStore('restaurantsObj');
+                          const tx = db.transaction('reviewsObj','readwrite');
+                          const store = tx.objectStore('reviewsObj');
                           store.put(data[key]);
                           return tx.complete;
           })
@@ -52,6 +35,47 @@ fetch(urlDB_reviews)
 
 
 
+    let count = 31; 
+    
+    while(count<100){
+      fetch(`http://localhost:1337/reviews/${count}`)
+      .then(res=>{
+          if(res.status == 404) return;   
+          return res.json()     
+        
+      })
+      .then(comment =>{
+        if(comment === undefined) return; 
+        dbPromise
+        .then(db=>{
+                        const tx = db.transaction('reviewsObj','readwrite');
+                        const store = tx.objectStore('reviewsObj');
+                        store.put(comment);
+                        return tx.complete;
+        })
+
+      })
+      count++; 
+    }
+
+  
+  // populate IndexDB restaurant objectStore
+    const urlDB = 'http://localhost:1337/restaurants';
+    fetch(urlDB)
+      .then(res=>res.json())
+      .then(data=>{
+        for (let key in data){
+          dbPromise
+            .then(db=>{
+                            const tx = db.transaction('restaurantsObj','readwrite');
+                            const store = tx.objectStore('restaurantsObj');
+                            store.put(data[key]);
+                            return tx.complete;
+            })
+        }
+      })
+
+}
 
 
 // Add variables for cache versions
@@ -127,6 +151,7 @@ self.addEventListener('install',(event)=>{
 
   self.addEventListener('activate',(event)=>{
     console.log('Activating Service Worker',event);
+   
     event.waitUntil(
       caches.keys()
         .then((keylist)=>{
@@ -136,7 +161,11 @@ self.addEventListener('install',(event)=>{
               return caches.delete(key);
             }
           }))
-        })
+        }) 
+      
+    )
+    event.waitUntil(
+      updateIndexDB()
     )
     return self.clients.claim();
   })
@@ -146,27 +175,7 @@ self.addEventListener('install',(event)=>{
 
 
 self.addEventListener('fetch',(event)=>{
-  // const urlDB = 'http://localhost:1337/restaurants';
-  // if (event.request.url.indexOf(urlDB) > -1) {
-  //     console.log(urlDB,'it is JSON url');
-  //     event.respondWith(fetch(event.request)
-  //       .then(function (res) {
-  //         const clonedRes = res.clone();
-  //         clonedRes.json()
-  //           .then((data)=>{
-  //             for (let key in data){
-  //               dbPromise
-  //                 .then((db)=>{
-  //                   const tx = db.transaction('restaurantsObj','readwrite');
-  //                   const store = tx.objectStore('restaurantsObj');
-  //                   store.put(data[key]);
-  //                   return tx.complete;
-  //                 });
-  //             };
-  //           });
-  //         return res;
-  //       }))
-  // } else {
+
     event.respondWith(
       caches.match(event.request)
         .then((response)=>{
@@ -226,8 +235,17 @@ self.addEventListener('sync',(event)=>{
                        })
                      })
                       .then((res)=>{
-                        console.log('Sent data',res);
+                    
                         // Delete sent data
+                    
+                        dbPromise
+                          .then(db=>{
+                            const tx = db.transaction('reviewsObj','readwrite');
+                            const store = tx.objectStore('reviewsObj');
+                            store.delete(commentToSync.id);
+                       
+                            return tx.complete;
+                          })
                       })
                       .catch(er=>console.log)
                     }
