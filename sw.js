@@ -11,11 +11,7 @@ const dbPromise = idb.open('restaurant-store',1,function (db) {
 
 });
 //create objectStore  //
-const updateIndexDB = ()=>{
- 
-  
-  // populate indexDB reviews objectStore 
-  
+const populateExistingReviews =()=>{
 
   const urlDB_reviews = 'http://localhost:1337/reviews/';
 
@@ -33,8 +29,33 @@ const updateIndexDB = ()=>{
       }
     })
 
+      
+  // populate IndexDB restaurant objectStore
+  const urlDB = 'http://localhost:1337/restaurants';
+  fetch(urlDB)
+    .then(res=>res.json())
+    .then(data=>{
+      for (let key in data){
+        dbPromise
+          .then(db=>{
+                          const tx = db.transaction('restaurantsObj','readwrite');
+                          const store = tx.objectStore('restaurantsObj');
+                          store.put(data[key]);
+                          return tx.complete;
+          })
+      }
+    })
 
 
+
+
+}
+
+const updateIndexDB = ()=>{
+ 
+  
+  // populate indexDB with added reviews objectStore 
+  
     let count = 31; 
     
     while(count<100){
@@ -57,24 +78,6 @@ const updateIndexDB = ()=>{
       })
       count++; 
     }
-
-  
-  // populate IndexDB restaurant objectStore
-    const urlDB = 'http://localhost:1337/restaurants';
-    fetch(urlDB)
-      .then(res=>res.json())
-      .then(data=>{
-        for (let key in data){
-          dbPromise
-            .then(db=>{
-                            const tx = db.transaction('restaurantsObj','readwrite');
-                            const store = tx.objectStore('restaurantsObj');
-                            store.put(data[key]);
-                            return tx.complete;
-            })
-        }
-      })
-
 }
 
 
@@ -144,6 +147,9 @@ self.addEventListener('install',(event)=>{
         cache.addAll(staticFilesToPrecach);
       })
     );
+    event.waitUntil(
+      populateExistingReviews()
+    )
 });
 
 // Listening to activate event
@@ -190,7 +196,7 @@ self.addEventListener('fetch',(event)=>{
                     return res;
                   })
               })
-              .catch((err)=>{
+              .catch((err)=>{console.log(err);
               })
       }
     })
@@ -235,17 +241,18 @@ self.addEventListener('sync',(event)=>{
                        })
                      })
                       .then((res)=>{
+                        console.log('Sent to',res);
                     
                         // Delete sent data
                     
-                        dbPromise
-                          .then(db=>{
-                            const tx = db.transaction('reviewsObj','readwrite');
-                            const store = tx.objectStore('reviewsObj');
-                            store.delete(commentToSync.id);
+                        // dbPromise
+                        //   .then(db=>{
+                        //     const tx = db.transaction('reviewsObj','readwrite');
+                        //     const store = tx.objectStore('reviewsObj');
+                        //     store.delete(commentToSync.id);
                        
-                            return tx.complete;
-                          })
+                        //     return tx.complete;
+                        //   })
                       })
                       .catch(er=>console.log)
                     }
@@ -254,13 +261,10 @@ self.addEventListener('sync',(event)=>{
                   return cursor.continue().then(cursorIterate);
                 });
                 tx.complete.then(() => console.log('finished'));
+                updateIndexDB()
     })
 
-
-
-
+  
   )
-
-
 
 })

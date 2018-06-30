@@ -122,14 +122,6 @@ fillReviewsHTML = () => {
 
   container.appendChild(title);
 
-  
-
-  // if (!reviews) {
-  //   const noReviews = document.createElement('p');
-  //   noReviews.innerHTML = 'No reviews yet!';
-  //   container.appendChild(noReviews);
-  //   return;
-  // }
   const ul = document.getElementById('reviews-list');
 
   dbPromise
@@ -153,10 +145,7 @@ fillReviewsHTML = () => {
 
   container.appendChild(ul);
 
-  // reviews.forEach(review => {
-  //   ul.appendChild(createReviewHTML(review));
-  // });
-  // container.appendChild(ul);
+  
 }
 
 /**
@@ -169,7 +158,7 @@ createReviewHTML = (review) => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.createdAt;
+  date.innerHTML = new Date(review.createdAt);
   li.appendChild(date);
 
   const rating = document.createElement('p');
