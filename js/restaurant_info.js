@@ -295,8 +295,10 @@ favStar.addEventListener('click',()=>{
 
 const close = document.getElementById('close');
 const modal = document.getElementById('modal');
-const submit = document.getElementById('submit')
-
+const submit = document.getElementById('submit');
+const formName = document.querySelector('#reviewer_name');
+const formComments = document.querySelector('#comments');
+const formRating = document.querySelector('#rating');
 
 close.addEventListener('click', (event)=> {
 event.preventDefault();
@@ -305,8 +307,44 @@ modal.style.display = 'none';
 
 submit.addEventListener('click',(event)=>{
     event.preventDefault();
+    if(formComments.value.trim()=== '' || formRating.value.trim() === '' || formName.value.trim() === '') {
+      alert('Please, fill all the fields')
+      return 
+    }
+    modal.style.display = 'none';
+
+    const newComment = {
+      id: new Date().toISOString(),
+      restaurant_id: myID,
+      name: formName.value,
+      rating:formRating.value,
+      comments:formComments.value,
+      // createdAt: new Date(),
+  };
+
+  // ul.appendChild(createReviewHTML(newComment));
+  // container.appendChild(ul);
+
+
+
+  console.log(newComment);
+
+
+    dbPromise
+        .then(db=>{
+                        const tx = db.transaction('reviewsObj','readwrite');
+                        const store = tx.objectStore('reviewsObj');
+                        store.put(newComment);
+                        return tx.complete;
+        }).then(()=>{
+          const ul1 = document.getElementById('reviews-list');
+          ul1.innerHTML ='';
+
+          fillReviewsHTML()
+        })
+    }
     
-})
+)
 
 
 

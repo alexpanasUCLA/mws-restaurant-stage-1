@@ -73,9 +73,20 @@
         <h3>Add review </h3>
         <form>
           <p>
-            <label for="rating">rating</label>
-            <input type="text" name="rating">
+            <label for="rating">Rating</label>
+            <input type="text" name="rating" id="rating">
           </p>
+          <p>
+            <label for="reviewer_name">Name</label>
+            <input type="text" name="reviewer_name" id="reviewer_name">
+          </p>
+          <p>
+            <label for="comments">Comments</label>
+            <textarea id="comments" rows="3" cols="33" maxlength="200" wrap="hard"
+             name="comments"> </textarea>
+          </p>
+
+
           <p>
             <button type="submit" id="submit">Submit</button>
           </p>

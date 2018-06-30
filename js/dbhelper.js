@@ -262,6 +262,9 @@ class DBHelper {
     return marker;
   }
 
+
+
+
 }
 
 // Register service worker
