@@ -169,7 +169,7 @@ createReviewHTML = (review) => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  date.innerHTML = review.createdAt;
   li.appendChild(date);
 
   const rating = document.createElement('p');
@@ -313,37 +313,72 @@ submit.addEventListener('click',(event)=>{
     }
     modal.style.display = 'none';
 
-    const newComment = {
-      id: new Date().toISOString(),
-      restaurant_id: myID,
-      name: formName.value,
-      rating:formRating.value,
-      comments:formComments.value,
-      // createdAt: new Date(),
-  };
+    if('serviceWorker' in navigator && 'SyncManager' in window) {
+      navigator.serviceWorker.ready
+        .then(sw=>{
+          const newComment = {
+            id: new Date().toISOString(),
+            restaurant_id: myID,
+            name: formName.value,
+            rating:formRating.value,
+            comments:formComments.value,
+            createdAt: new Date().toDateString(),
+            fromForm: true,
+        };
 
-  // ul.appendChild(createReviewHTML(newComment));
-  // container.appendChild(ul);
+        console.log(newComment);
 
+          dbPromise
+          .then(db=>{
+                          const tx = db.transaction('reviewsObj','readwrite');
+                          const store = tx.objectStore('reviewsObj');
+                          store.put(newComment);
+                          return tx.complete;
+          }).then(()=>{
+            sw.sync.register('sync-new-comment')
 
-
-  console.log(newComment);
-
-
-    dbPromise
-        .then(db=>{
-                        const tx = db.transaction('reviewsObj','readwrite');
+            const container1 = document.getElementById('reviews-container');
+            const ul1 = document.getElementById('reviews-list');
+            ul1.innerHTML ='';
+      
+            dbPromise
+            .then(db=>{
+                        
+                        const tx = db.transaction('reviewsObj','readonly');
                         const store = tx.objectStore('reviewsObj');
-                        store.put(newComment);
-                        return tx.complete;
-        }).then(()=>{
-          const ul1 = document.getElementById('reviews-list');
-          ul1.innerHTML ='';
+                        store.openCursor().then(function cursorIterate(cursor){
+                          if (!cursor) return;
+                      
+                            const entryRest = cursor.value; 
+                            if(entryRest.restaurant_id === myID ) {
+                              ul1.appendChild(createReviewHTML(entryRest));
+                            }
+                          
+                      
+                          return cursor.continue().then(cursorIterate);
+                        });
+                        tx.complete.then(() => console.log('finished'));
+            })
+          
+            container1.appendChild(ul1);
+         
+          })
 
-          fillReviewsHTML()
         })
+
+
     }
-    
+
+
+
+ 
+
+
+
+
+
+
+    }
 )
 
 

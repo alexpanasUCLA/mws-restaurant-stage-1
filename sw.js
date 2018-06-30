@@ -1,8 +1,8 @@
-
 importScripts('/js/idb.js');
 
-
 //create objectStore  //
+
+
 const dbPromise = idb.open('restaurant-store',1,function (db) {
   if (!db.objectStoreNames.contains('restaurantsObj')) {
     db.createObjectStore('restaurantsObj',{keyPath:'id'})
@@ -123,6 +123,7 @@ self.addEventListener('install',(event)=>{
 });
 
 // Listening to activate event
+// TODO - add creating database to activate event 
 
   self.addEventListener('activate',(event)=>{
     console.log('Activating Service Worker',event);
@@ -185,7 +186,63 @@ self.addEventListener('fetch',(event)=>{
       }
     })
   );
-  // }
-
-
+  
 });
+
+// Registring sync event 
+
+self.addEventListener('sync',(event)=>{
+  console.log('Background syncing',event);
+  if(event.tag === 'sync-new-comment'){
+    console.log('Syncing new post');
+  }
+  event.waitUntil(
+    // Use cursor to get through reviewsObj store and POST to server new comments
+    dbPromise
+    .then(db=>{
+                
+                const tx = db.transaction('reviewsObj','readonly');
+                const store = tx.objectStore('reviewsObj');
+                store.openCursor().then(function cursorIterate(cursor){
+                  if (!cursor) return;
+              
+                    const commentToSync = cursor.value; 
+                    if(commentToSync.fromForm) {
+                      // POST to server 
+                     console.log(commentToSync.comments);
+                     console.log(commentToSync.restaurant_id);
+                     console.log(commentToSync.rating);
+                     fetch('http://localhost:1337/reviews/',{
+                       method:'POST',
+                       headers:{
+                         'Content-Type':'application/json',
+                         'Accept':'application/json'
+                       },
+                       body:JSON.stringify({
+                         restaurant_id:commentToSync.restaurant_id,
+                         name:commentToSync.name,
+                         rating:commentToSync.rating,
+                         comments:commentToSync.comments
+                       })
+                     })
+                      .then((res)=>{
+                        console.log('Sent data',res);
+                        // Delete sent data
+                      })
+                      .catch(er=>console.log)
+                    }
+                  
+              
+                  return cursor.continue().then(cursorIterate);
+                });
+                tx.complete.then(() => console.log('finished'));
+    })
+
+
+
+
+  )
+
+
+
+})
