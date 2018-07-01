@@ -5,6 +5,7 @@
                 background-color: white;
                 font-size: 1em;
                 }
+
     
                 .modal {
                 display: block;
@@ -29,12 +30,36 @@
                 left: 3%;
                 padding: 2em 3em;
                 background-color: rgba(219, 212, 212, 0.973);
-                overflow:auto;
+                /* overflow:auto; */
               
                 }
     
                 .modal-close {
-                cursor: pointer;     }     
+                  position: absolute;
+                  top:1em;
+                  right: 1.2em;
+                  border-radius: 2em;
+                  background-color: rgb(206, 214, 221);
+                  border:2px solid yellow;
+                  cursor: pointer; 
+                }     
+
+                #submit {
+                  position: absolute;
+                  bottom:1em;
+                  left:35%;
+                  padding-left: 5em;
+                  padding-right: 5em;
+                  background-color: rgb(206, 214, 221);
+                  border:2px solid yellow;
+                  cursor: pointer; 
+                  border-radius: 2em;
+                }
+
+                #comments{
+                  position: absolute;
+                  right:2em;
+                }
                         
 
 
@@ -150,9 +175,30 @@ font-size: 1.2em;
     width: 40%;
     flex-grow:1;
   }
+  .modal-body {
+    
+    top: 40%;
+    bottom: 5%;
+    right: 15%;
+    left: 15%;
+    }
+
+
+
 }
 
+
+
 @media screen and (min-width:1000px) {
+
+  .modal-body {
+    
+    top: 40%;
+    bottom: 5%;
+    right: 25%;
+    left: 25%;
+    }
+
 
   /* nav,body,header {
     max-width: 1000px;

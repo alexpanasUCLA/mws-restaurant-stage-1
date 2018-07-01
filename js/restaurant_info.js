@@ -112,6 +112,8 @@ fillReviewsHTML = () => {
   const newReviewButton = document.createElement('button')
 
   newReviewButton.innerHTML = 'Write your review'
+  newReviewButton.style.backgroundColor = 'red';
+  newReviewButton.style.color = 'white';
 
   newReviewButton.onclick = (event)=>{
     event.preventDefault();
