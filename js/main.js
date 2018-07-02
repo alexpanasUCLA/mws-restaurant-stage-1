@@ -1,4 +1,4 @@
-let restaurants,
+var restaurants,
   neighborhoods,
   cuisines
 var map
