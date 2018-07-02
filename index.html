@@ -17,13 +17,21 @@
   <a href="#filterID" class="skip-link">Skip to filter </a>
   <header>
     <nav>
-      <h1><a href="/">Restaurant Reviews</a></h1>
+      <h1><a href="/">Restaurant Reviews</a>
+      </h1>
+
+    <button onclick="toggle_map()" style ="font-size: 1.3em;
+    padding-left: 2em;
+    padding-right: 2em;
+    background-color: red;
+    color: white;"> View Map </button>
+
     </nav>
   </header>
 
   <main id="maincontent">
     <section tabindex="-1" id="map-container" role="application">
-      <div tabindex="-1" id="map" role="application" ></div>
+      <div tabindex="-1" id="map" role="application" style="display:none;"></div>
     </section>
     <section>
       <div id="filterID" class="filter-options" tabindex="-1">
@@ -39,7 +47,15 @@
     </section>
   </main>
 
+  <script>
+  const toggle_map = () => {
+  if (document.getElementById('map').style.display === 'none')
+      document.getElementById('map').style.display = 'block'
+  else
+  document.getElementById('map').style.display = 'none'
+  }
 
+  </script>
   <script type="text/javascript" src="js/idb.js"> </script>
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.min.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/main.min.js"></script>
